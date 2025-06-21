@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cartão RA - Carlos Cotovio</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; }
+      #link { position: absolute; top: 10px; left: 10px; color: white; z-index: 100; }
+    </style>
+  </head>
+  <body>
+    <a-scene embedded arjs>
+      <a-marker preset="custom" type="pattern" url="pattern.patt">
+        <a-image src="logo.png" position="0 0.5 0" height="0.5" width="0.5"></a-image>
+        <a-text value="Carlos Cotovio" position="0 0.2 0" align="center" color="#FFFFFF"></a-text>
+        <a-text value="Regional Leiter" position="0 0.05 0" align="center" color="#CCCCCC" width="2"></a-text>
+
+        <a-plane position="0 -0.15 0" width="1" height="0.2" color="#007BFF"
+                 onclick="window.open('tel:+4917545635677', '_blank')">
+          <a-text value="📞 Ligar" position="0 0 0.01" align="center" color="white"></a-text>
+        </a-plane>
+
+        <a-plane position="0 -0.4 0" width="1" height="0.2" color="#28a745"
+                 onclick="window.open('mailto:winkler@arlt-wachdienst.de', '_blank')">
+          <a-text value="✉️ E-mail" position="0 0 0.01" align="center" color="white"></a-text>
+        </a-plane>
+
+        <a-plane position="0 -0.65 0" width="1" height="0.2" color="#6c757d"
+                 onclick="window.open('https://arlt-wachdienst.de', '_blank')">
+          <a-text value="🌐 Website" position="0 0 0.01" align="center" color="white"></a-text>
+        </a-plane>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
+</html>
