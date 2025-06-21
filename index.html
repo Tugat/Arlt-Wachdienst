@@ -1,37 +1,117 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>Cartão RA - Carlos Cotovio</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.js"></script>
+    <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
     <style>
-      body { margin: 0; overflow: hidden; }
-      #link { position: absolute; top: 10px; left: 10px; color: white; z-index: 100; }
+        body { 
+            margin: 0; 
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .ar-instructions {
+            position: fixed;
+            top: 0; 
+            left: 0; 
+            right: 0;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            z-index: 999;
+        }
+        .qr-section {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            z-index: 999;
+        }
+        #debug {
+            position: fixed;
+            bottom: 100px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            z-index: 1000;
+            font-size: 12px;
+        }
     </style>
-  </head>
-  <body>
-    <a-scene embedded arjs>
-      <a-marker preset="custom" type="pattern" url="pattern.patt">
-        <a-image src="logo.png" position="0 0.5 0" height="0.5" width="0.5"></a-image>
-        <a-text value="Carlos Cotovio" position="0 0.2 0" align="center" color="#FFFFFF"></a-text>
-        <a-text value="Regional Leiter" position="0 0.05 0" align="center" color="#CCCCCC" width="2"></a-text>
+</head>
+<body>
+    <div class="ar-instructions">
+        <h3>Como usar:</h3>
+        <p>1. Aponte a câmera para o marcador Hiro abaixo</p>
+        <p>2. Mantenha a 30-50cm de distância</p>
+        <img src="https://raw.githubusercontent.com/AR-js-org/AR.js/master/data/images/hiro.png" width="150px">
+    </div>
 
-        <a-plane position="0 -0.15 0" width="1" height="0.2" color="#007BFF"
-                 onclick="window.open('tel:+49172/37 89 381', '_blank')">
-          <a-text value="📞 Ligar" position="0 0 0.01" align="center" color="white"></a-text>
-        </a-plane>
+    <div id="debug">Status: Inicializando câmera...</div>
 
-        <a-plane position="0 -0.4 0" width="1" height="0.2" color="#28a745"
-                 onclick="window.open('mailto:cotovio@arlt-wachdienst.de', '_blank')">
-          <a-text value="✉️ E-mail" position="0 0 0.01" align="center" color="white"></a-text>
-        </a-plane>
+    <a-scene 
+        embedded 
+        arjs="sourceType: webcam; debugUIEnabled: true; detectionMode: mono_and_matrix; matrixCodeType: 3x3;"
+        vr-mode-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true; precision: high;"
+    >
+        <a-marker preset="hiro" id="marker">
+            <!-- Logo - Use um arquivo local -->
+            <a-image src="assets/logo.png" position="0 0.5 0" height="0.5" width="0.5"></a-image>
+            
+            <!-- Informações -->
+            <a-text value="Carlos Cotovio" position="0 0.2 0" align="center" color="#FFFFFF" width="3"></a-text>
+            <a-text value="Regional Leiter" position="0 0.05 0" align="center" color="#CCCCCC" width="3"></a-text>
 
-        <a-plane position="0 -0.65 0" width="1" height="0.2" color="#6c757d"
-                 onclick="window.open('https://arlt-wachdienst.de', '_blank')">
-          <a-text value="🌐 Website" position="0 0 0.01" align="center" color="white"></a-text>
-        </a-plane>
-      </a-marker>
-      <a-entity camera></a-entity>
+            <!-- Botões Interativos -->
+            <a-plane position="0 -0.15 0" width="1" height="0.2" color="#007BFF"
+                     onclick="window.open('tel:+497723789381', '_blank')">
+                <a-text value="📞 0772 / 37 89 381" position="0 0 0.01" align="center" color="white"></a-text>
+            </a-plane>
+
+            <a-plane position="0 -0.4 0" width="1" height="0.2" color="#28a745"
+                     onclick="window.open('mailto:cotovio@arlt-wachdienst.de', '_blank')">
+                <a-text value="✉️ cotovio@arlt-wachdienst.de" position="0 0 0.01" align="center" color="white"></a-text>
+            </a-plane>
+
+            <a-plane position="0 -0.65 0" width="1" height="0.2" color="#6c757d"
+                     onclick="window.open('https://arlt-wachdienst.de', '_blank')">
+                <a-text value="🌐 arlt-wachdienst.de" position="0 0 0.01" align="center" color="white"></a-text>
+            </a-plane>
+        </a-marker>
+        <a-entity camera></a-entity>
     </a-scene>
-  </body>
+
+    <!-- Seção do QR Code -->
+    <div class="qr-section">
+        <p>Compartilhe este cartão:</p>
+        <img src="assets/qr-code.png" width="150px" alt="QR Code">
+        <br>
+        <a href="assets/qr-code.png" download="cartao-ar-carlos.png">Baixar QR Code</a>
+    </div>
+
+    <script>
+        const marker = document.getElementById('marker');
+        const debug = document.getElementById('debug');
+        
+        marker.addEventListener('markerFound', () => {
+            debug.innerHTML = "✅ Marcador detectado!<br>Dica: Toque nos botões para interagir";
+        });
+        
+        marker.addEventListener('markerLost', () => {
+            debug.innerHTML = "⚠️ Marcador não visível<br>Aponte para o Hiro Marker";
+        });
+        
+        // Verifica permissões
+        navigator.permissions.query({name: 'camera'}).then(permissionStatus => {
+            if (permissionStatus.state === 'denied') {
+                debug.innerHTML = "❌ Câmera bloqueada<br>Permita o acesso nas configurações";
+            }
+        });
+    </script>
+</body>
 </html>
